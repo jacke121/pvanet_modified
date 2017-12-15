@@ -4,6 +4,8 @@
 Wrapper function for PVANet
 """
 
+#import matplotlib
+#matplotlib.use('Agg')
 import _init_paths
 from fast_rcnn.config import cfg, cfg_from_file
 from fast_rcnn.test import im_detect, bbox_vote
