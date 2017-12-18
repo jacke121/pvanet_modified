@@ -18,9 +18,10 @@ import argparse
 import pprint
 import time, os, sys
 import cPickle
+import ipdb
 
 from datasets.pascal_voc import pascal_voc
-from datasets.evaluate_different_size_recall import pascal_voc_enhanced
+from extended_utility_by_jh.pascal_Voc_Enhanced import pascal_voc_enhanced
 
 def parse_args():
     """
@@ -82,6 +83,7 @@ if __name__ == '__main__':
     if not cfg.TEST.HAS_RPN:
         imdb.set_proposal_method(cfg.TEST.PROPOSAL_METHOD)
 
+    imdb.set_proposal_method( 'gt' )
     anno_file = args.anno_file
     if os.path.exists( anno_file ):
         with open( anno_file , 'rb' ) as fid:
@@ -93,4 +95,6 @@ if __name__ == '__main__':
 
     print 'Evaluating detections'
     imdb.evaluate_detections_different_size_box( annotation_boxes ,  "./output/JH_test" )
+    print 'Evaluating detections recall hahahahah'
+    imdb.evaluate_rpn_recall( annotation_boxes )
 
