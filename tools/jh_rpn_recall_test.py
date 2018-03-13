@@ -18,7 +18,7 @@ import caffe
 import argparse
 import pprint
 import time, os, sys
-import cPickle
+import pickle
 
 import ipdb
 
@@ -85,14 +85,14 @@ if __name__ == '__main__':
     rpn_file = args.rpn_file
     if os.path.exists( rpn_file ):
         with open( rpn_file , 'rb' ) as fid:
-            rpn_boxes = cPickle.load(fid)
-            print "load rpn boxes from {}".format( rpn_file )
+            rpn_boxes = pickle.load(fid)
+            print("load rpn boxes from {}".format(rpn_file))
     else:
-        print "the rpn file doesn't exit"
+        print("the rpn file doesn't exit")
         sys.exit()
 
     #imdb.evaluate_detections_different_size_box( annotation_boxes ,  "./output/JH_test" )
 
-    print 'Evaluating detections recall hahahahah'
+    print('Evaluating detections recall hahahahah')
     imdb.evaluate_rpn_without_regression_and_classification_recall( rpn_boxes )
 

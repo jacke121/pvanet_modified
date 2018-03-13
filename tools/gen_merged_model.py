@@ -65,13 +65,13 @@ def merge_conv_and_bn(net, i_conv, i_bn, i_scale):
         num_bn_samples[0] = 1
 
     if net.params.has_key(key_scale):
-        print 'Combine {:s} + {:s} + {:s}'.format(key_conv, key_bn, key_scale)
+        print('Combine {:s} + {:s} + {:s}'.format(key_conv, key_bn, key_scale))
         scale_weight = copy_double(net.params[key_scale][0].data)
         scale_bias = copy_double(net.params[key_scale][1].data)
         net.params[key_scale][0].data[:] = 1
         net.params[key_scale][1].data[:] = 0
     else:
-        print 'Combine {:s} + {:s}'.format(key_conv, key_bn)
+        print('Combine {:s} + {:s}'.format(key_conv, key_bn))
         scale_weight = 1
         scale_bias = 0
 
@@ -100,7 +100,7 @@ def merge_batchnorms_in_net(net):
         can_be_absorbed = True
 
         # Search all (bottom) layers
-        for j in xrange(i - 1, -1, -1):
+        for j in range(i - 1, -1, -1):
             tops_of_j = net.top_names[net._layer_names[j]]
             if l_bottom in tops_of_j:
                 if net.layers[j].type not in ['Convolution', 'InnerProduct']:
@@ -115,7 +115,7 @@ def merge_batchnorms_in_net(net):
 
         # find the following Scale
         scale_ind = None
-        for j in xrange(i + 1, len(net.layers)):
+        for j in range(i + 1, len(net.layers)):
             bottoms_of_j = net.bottom_names[net._layer_names[j]]
             if l_top in bottoms_of_j:
                 if scale_ind:
@@ -176,7 +176,7 @@ def pick_empty_layers(layer, net, model, i):
         length_is_1 = (net.params['conv1_1/bn'][2].data == 1) or (net.params[layer.name][2].data == 0)
 
         if zero_mean and one_var and length_is_1:
-            print 'Delete layer: {}'.format(layer.name)
+            print('Delete layer: {}'.format(layer.name))
             to_delete_empty.append(layer)
 
     if layer.type == 'Scale':
@@ -184,7 +184,7 @@ def pick_empty_layers(layer, net, model, i):
         zero_bias = np.all(net.params[layer.name][1].data == 0)
 
         if no_scaling and zero_bias:
-            print 'Delete layer: {}'.format(layer.name)
+            print('Delete layer: {}'.format(layer.name))
             to_delete_empty.append(layer)
 
 def remove_empty_layers(net, model):

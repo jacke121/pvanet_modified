@@ -65,7 +65,7 @@ class PVANet:
         # Warm-up
         # Warmup on a dummy image
         im = 128 * np.ones((300, 500, 3), dtype=np.uint8)
-        for i in xrange(2):
+        for i in range(2):
             _, _ = im_detect(net, im)
 
         self._net = net
@@ -86,7 +86,7 @@ class PVANet:
         all_boxes = np.zeros((0, 6))
 
         # skip j = 0, because it's the background class
-        for j in xrange(1, PVANet.N_CLASSES):
+        for j in range(1, PVANet.N_CLASSES):
             inds = np.where(scores[:, j] > self._thresh)[0]
             cls_scores = scores[inds, j]
             cls_boxes = boxes[inds, j * 4:(j + 1) * 4]
@@ -126,8 +126,8 @@ if __name__ == "__main__":
                 '001763.jpg', '004545.jpg']
 
     for im_name in im_names:
-        print '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
-        print 'Demo for data/demo/{}'.format(im_name)
+        print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
+        print('Demo for data/demo/{}'.format(im_name))
 
         # Load the demo image
         im_file = os.path.join(cfg.DATA_DIR, 'demo', im_name)
@@ -137,7 +137,7 @@ if __name__ == "__main__":
         im = pvanet.read_img(im_file)
         dets = pvanet.process_img(im)
         timer.toc()
-        print ('Detection took {:.3f}s'.format(timer.total_time))
+        print('Detection took {:.3f}s'.format(timer.total_time))
 
         # Visualize detections for each class
         CONF_THRESH = 0.7

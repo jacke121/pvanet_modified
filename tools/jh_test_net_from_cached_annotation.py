@@ -17,7 +17,7 @@ import caffe
 import argparse
 import pprint
 import time, os, sys
-import cPickle
+import pickle
 import ipdb
 
 from datasets.pascal_voc import pascal_voc
@@ -87,14 +87,14 @@ if __name__ == '__main__':
     anno_file = args.anno_file
     if os.path.exists( anno_file ):
         with open( anno_file , 'rb' ) as fid:
-            annotation_boxes = cPickle.load(fid)
-            print "load annotation boxes from {}".format( anno_file )
+            annotation_boxes = pickle.load(fid)
+            print("load annotation boxes from {}".format(anno_file))
     else:
-        print "the annotation file doesn't exit"
+        print("the annotation file doesn't exit")
         sys.exit()
 
-    print 'Evaluating detections'
+    print('Evaluating detections')
     imdb.evaluate_detections_different_size_box( annotation_boxes ,  "./output/JH_test" )
-    print 'Evaluating detections recall hahahahah'
+    print('Evaluating detections recall hahahahah')
     imdb.evaluate_rpn_recall( annotation_boxes )
 

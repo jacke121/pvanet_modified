@@ -5,7 +5,7 @@ from utils.cython_bbox import bbox_overlaps
 
 import os, sys
 import ipdb
-import cPickle
+import pickle
 import numpy as np
 
 
@@ -34,26 +34,26 @@ class pascal_voc_enhanced( pascal_voc ):
         recalls = solution['recalls']
         thresholds = solution['thresholds']
 
-        print 'Method: {}'.format("rpn after regression")
-        print 'AverageRec: {:.3f}'.format(ar)
+        print('Method: {}'.format("rpn after regression"))
+        print('AverageRec: {:.3f}'.format(ar))
 
         def recall_at(t):
             ind = np.where(thresholds > t - 1e-5)[0][0]
             assert np.isclose(thresholds[ind], t)
             return recalls[ind]
 
-        print 'Recall@0.5: {:.3f}'.format(recall_at(0.5))
-        print 'Recall@0.6: {:.3f}'.format(recall_at(0.6))
-        print 'Recall@0.7: {:.3f}'.format(recall_at(0.7))
-        print 'Recall@0.8: {:.3f}'.format(recall_at(0.8))
-        print 'Recall@0.9: {:.3f}'.format(recall_at(0.9))
+        print('Recall@0.5: {:.3f}'.format(recall_at(0.5)))
+        print('Recall@0.6: {:.3f}'.format(recall_at(0.6)))
+        print('Recall@0.7: {:.3f}'.format(recall_at(0.7)))
+        print('Recall@0.8: {:.3f}'.format(recall_at(0.8)))
+        print('Recall@0.9: {:.3f}'.format(recall_at(0.9)))
         # print again for easy spreadsheet copying
-        print '{:.3f}'.format(ar)
-        print '{:.3f}'.format(recall_at(0.5))
-        print '{:.3f}'.format(recall_at(0.6))
-        print '{:.3f}'.format(recall_at(0.7))
-        print '{:.3f}'.format(recall_at(0.8))
-        print '{:.3f}'.format(recall_at(0.9))
+        print('{:.3f}'.format(ar))
+        print('{:.3f}'.format(recall_at(0.5)))
+        print('{:.3f}'.format(recall_at(0.6)))
+        print('{:.3f}'.format(recall_at(0.7)))
+        print('{:.3f}'.format(recall_at(0.8)))
+        print('{:.3f}'.format(recall_at(0.9)))
 
     def evaluate_rpn_recall( self , all_boxes ):
         """
@@ -75,7 +75,7 @@ class pascal_voc_enhanced( pascal_voc ):
                 det = all_boxes[cls_ind][im_ind]
                 if det == []:
                     continue
-                for k in xrange( det.shape[0] ):
+                for k in range( det.shape[0] ):
                     bbox_image = np.concatenate( ( bbox_image , [det[k,0]+1 , det[k,1]+1 , det[k,2]+1 , det[k,3]+1 ] ) )
             bbox_image = bbox_image.reshape( ( len(bbox_image)/4 , 4 ) )
             converted_bbox.append( bbox_image )
@@ -88,27 +88,27 @@ class pascal_voc_enhanced( pascal_voc ):
         gt_overlaps = solution['gt_overlaps']
         recalls = solution['recalls']
         thresholds = solution['thresholds']
-        
-	print 'Method: {}'.format("rpn after regression")
-	print 'AverageRec: {:.3f}'.format(ar)
 
-	def recall_at(t):
+        print('Method: {}'.format("rpn after regression"))
+        print('AverageRec: {:.3f}'.format(ar))
+
+        def recall_at(t):
 	    ind = np.where(thresholds > t - 1e-5)[0][0]
 	    assert np.isclose(thresholds[ind], t)
 	    return recalls[ind]
 
-	print 'Recall@0.5: {:.3f}'.format(recall_at(0.5))
-	print 'Recall@0.6: {:.3f}'.format(recall_at(0.6))
-	print 'Recall@0.7: {:.3f}'.format(recall_at(0.7))
-	print 'Recall@0.8: {:.3f}'.format(recall_at(0.8))
-	print 'Recall@0.9: {:.3f}'.format(recall_at(0.9))
-	# print again for easy spreadsheet copying
-	print '{:.3f}'.format(ar)
-	print '{:.3f}'.format(recall_at(0.5))
-	print '{:.3f}'.format(recall_at(0.6))
-	print '{:.3f}'.format(recall_at(0.7))
-	print '{:.3f}'.format(recall_at(0.8))
-	print '{:.3f}'.format(recall_at(0.9))
+        print('Recall@0.5: {:.3f}'.format(recall_at(0.5)))
+        print('Recall@0.6: {:.3f}'.format(recall_at(0.6)))
+        print('Recall@0.7: {:.3f}'.format(recall_at(0.7)))
+        print('Recall@0.8: {:.3f}'.format(recall_at(0.8)))
+        print('Recall@0.9: {:.3f}'.format(recall_at(0.9)))
+        # print again for easy spreadsheet copying
+        print('{:.3f}'.format(ar))
+        print('{:.3f}'.format(recall_at(0.5)))
+        print('{:.3f}'.format(recall_at(0.6)))
+        print('{:.3f}'.format(recall_at(0.7)))
+        print('{:.3f}'.format(recall_at(0.8)))
+        print('{:.3f}'.format(recall_at(0.9)))
 
     def evaluate_recall_specific_size( self, all_boxes , ovthresh = 0.5 , area='all' ):
 
@@ -123,7 +123,7 @@ class pascal_voc_enhanced( pascal_voc ):
         if os.path.isfile( cache_file ):
             # if the file is cached, then we read from the cache to save time
             with open( cache_file , 'r' ) as f:
-                recs = cPickle.load(f)
+                recs = pickle.load(f)
         else:
             #if the file doesn't exits, then read from annotation file
             recs = {}
@@ -132,11 +132,11 @@ class pascal_voc_enhanced( pascal_voc ):
             for i, img_name in enumerate( imageNames ):
                 assert os.path.exists( AnnotationFile.format(img_name) ) , " the xml annotation file doesn't exits "
                 recs[img_name] = parse_rec( AnnotationFile.format(img_name) )
-                print "reading xml from annotation dir: {:d}/{:d} ".format( i+1 , len(imageNames) )
+                print("reading xml from annotation dir: {:d}/{:d} ".format(i + 1, len(imageNames)))
 
-            print "saving cache file for annotation xml"
+            print("saving cache file for annotation xml")
             with open( cache_file , 'w' ) as f:
-                cPickle.dump( recs , f )
+                pickle.dump( recs , f )
 
         #define several different sizes
 	areas = { 'all': 0, 'small': 1, 'medium': 2, 'large': 3,
@@ -197,7 +197,7 @@ class pascal_voc_enhanced( pascal_voc ):
                 if dets == []:
                     continue
 
-                for k in xrange( dets.shape[0] ):
+                for k in range( dets.shape[0] ):
                     bbox_img_ids.append( index )
                     bbox_cls.append( cls_ind )
                     bbox_score.append( dets[k,-1] )
@@ -216,11 +216,11 @@ class pascal_voc_enhanced( pascal_voc ):
         bbox_xy_pos  = bbox_xy_pos[sorted_ind , :]
 
         nd = len( bbox_img_ids )
-        
-        print 'we have detected {:d} annotations in all'.format(nd)
+
+        print('we have detected {:d} annotations in all'.format(nd))
         tp = np.zeros(nd)
 
-        for d in xrange(nd):
+        for d in range(nd):
             R = recs_right_size[ bbox_img_ids[d] ]
             ind_right_cls = np.where( R['cls'] == bbox_cls[d] )[0]
 
@@ -261,8 +261,8 @@ class pascal_voc_enhanced( pascal_voc ):
         tp = np.cumsum(tp)
         recall = tp/float( npos )
 
-        print "number of qualified boxes is:{:d}".format(npos)
-        print 'mean of true positive is {:f}'.format( recall.mean() )
+        print("number of qualified boxes is:{:d}".format(npos))
+        print('mean of true positive is {:f}'.format(recall.mean()))
 
     def evaluate_recall(self, candidate_boxes=None, thresholds=None,
                         area='all', limit=None):
@@ -292,7 +292,7 @@ class pascal_voc_enhanced( pascal_voc ):
         area_range = area_ranges[areas[area]]
         gt_overlaps = np.zeros(0)
         num_pos = 0
-        for i in xrange(self.num_images):
+        for i in range(self.num_images):
             # Checking for max_overlaps == 1 avoids including crowd annotations
             # (...pretty hacking :/)
             max_gt_overlaps = self.roidb[i]['gt_overlaps'].toarray().max(axis=1)
@@ -321,7 +321,7 @@ class pascal_voc_enhanced( pascal_voc ):
                                      gt_boxes.astype(np.float))
 
             _gt_overlaps = np.zeros((gt_boxes.shape[0]))
-            for j in xrange(gt_boxes.shape[0]):
+            for j in range(gt_boxes.shape[0]):
                 # find which proposal box maximally covers each gt box
                 argmax_overlaps = overlaps.argmax(axis=0)
                 # and get the iou amount of coverage for each gt box
